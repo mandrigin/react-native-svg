@@ -9,6 +9,12 @@
 #import "RNSVGDefsManager.h"
 #import "RNSVGDefs.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#else
+#define PLATFORM_VIEW UIView
+#endif
+
 @implementation RNSVGDefsManager
 
 RCT_EXPORT_MODULE()
@@ -18,7 +24,7 @@ RCT_EXPORT_MODULE()
   return [RNSVGDefs new];
 }
 
-- (UIView *)view
+- (PLATFORM_VIEW *)view
 {
     return [self node];
 }

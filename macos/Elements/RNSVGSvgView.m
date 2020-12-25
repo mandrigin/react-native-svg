@@ -11,6 +11,14 @@
 #import "RNSVGNode.h"
 #import <React/RCTLog.h>
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_COLOR NSColor
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_COLOR UIColor
+#define PLATFORM_EVENT UIEvent
+#endif
+
 @implementation RNSVGSvgView
 {
     NSMutableDictionary<NSString *, RNSVGNode *> *_clipPaths;
@@ -27,20 +35,26 @@
     if (self = [super initWithFrame:frame]) {
         // This is necessary to ensure that [self setNeedsDisplay] actually triggers
         // a redraw when our parent transitions between hidden and visible.
+#ifndef TARGET_OS_OSX
         self.contentMode = UIViewContentModeRedraw;
+#endif
         rendered = false;
     }
     return self;
 }
 
-- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
+- (void)insertReactSubview:(PLATFORM_VIEW *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
+#ifndef TARGET_OS_OSX
     [self insertSubview:subview atIndex:atIndex];
+#else
+    [self addSubview:subview];
+#endif
     [self invalidate];
 }
 
-- (void)removeReactSubview:(UIView *)subview
+- (void)removeReactSubview:(PLATFORM_VIEW *)subview
 {
     [super removeReactSubview:subview];
     [self invalidate];
@@ -66,7 +80,7 @@
 
 - (void)invalidate
 {
-    UIView* parent = self.superview;
+    PLATFORM_VIEW* parent = self.superview;
     if ([parent isKindOfClass:[RNSVGNode class]]) {
         if (!rendered) {
             return;
@@ -76,7 +90,9 @@
         rendered = false;
         return;
     }
+#ifndef TARGET_OS_OSX
     [self setNeedsDisplay];
+#endif
 }
 
 - (void)tintColorDidChange
@@ -190,7 +206,7 @@
         _invviewBoxTransform = CGAffineTransformIdentity;
     }
 
-    for (UIView *node in self.subviews) {
+    for (PLATFORM_VIEW *node in self.subviews) {
         if ([node isKindOfClass:[RNSVGNode class]]) {
             RNSVGNode *svg = (RNSVGNode *)node;
             [svg renderTo:context
@@ -203,7 +219,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    UIView* parent = self.superview;
+    PLATFORM_VIEW* parent = self.superview;
     if ([parent isKindOfClass:[RNSVGNode class]]) {
         return;
     }
@@ -214,7 +230,7 @@
     _boundingBox = rect;
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    for (UIView *node in self.subviews) {
+    for (PLATFORM_VIEW *node in self.subviews) {
         if ([node isKindOfClass:[RNSVGNode class]]) {
             RNSVGNode *svg = (RNSVGNode *)node;
             if (svg.responsible && !self.responsible) {
@@ -228,7 +244,7 @@
     [self drawToContext:context withRect:rect];
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (PLATFORM_VIEW *)hitTest:(CGPoint)point withEvent:(PLATFORM_EVENT *)event
 {
     CGPoint transformed = point;
     if (self.align) {
@@ -243,7 +259,7 @@
             node.active = NO;
         }
 
-        UIView *hitChild = [node hitTest:transformed withEvent:event];
+        PLATFORM_VIEW *hitChild = [node hitTest:transformed withEvent:event];
 
         if (hitChild) {
             node.active = YES;
@@ -279,10 +295,17 @@
     return base64;
 }
 
-- (void)reactSetInheritedBackgroundColor:(UIColor *)inheritedBackgroundColor
+- (void)reactSetInheritedBackgroundColor:(PLATFORM_COLOR *)inheritedBackgroundColor
 {
     self.backgroundColor = inheritedBackgroundColor;
 }
+
+#ifdef TARGET_OS_OSX
+- (void)setBackgroundColor:(NSColor *)color
+{
+    self.layer.backgroundColor = color.CGColor;
+}
+#endif
 
 - (void)defineClipPath:(__kindof RNSVGNode *)clipPath clipPathName:(NSString *)clipPathName
 {

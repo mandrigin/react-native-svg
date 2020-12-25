@@ -4,7 +4,6 @@
  https://github.com/erica/iOS-Drawing/tree/master/C08/Quartz%20Book%20Pack/Bezier
  */
 
-#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
 #define RNSVGNULLPOINT CGRectNull.origin

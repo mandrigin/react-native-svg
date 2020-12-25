@@ -12,11 +12,19 @@
 #import "RNSVGSvgViewManager.h"
 #import "RNSVGSvgView.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_EVENT UIEvent
+#endif
+
 @implementation RNSVGSvgViewManager
 
 RCT_EXPORT_MODULE()
 
-- (UIView *)view
+- (PLATFORM_VIEW *)view
 {
     return [RNSVGSvgView new];
 }
@@ -40,8 +48,8 @@ RCT_CUSTOM_VIEW_PROPERTY(color, id, RNSVGSvgView)
 
 
 - (void)toDataURL:(nonnull NSNumber *)reactTag options:(NSDictionary *)options callback:(RCTResponseSenderBlock)callback attempt:(int)attempt {
-    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-        __kindof UIView *view = viewRegistry[reactTag];
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,PLATFORM_VIEW *> *viewRegistry) {
+        __kindof PLATFORM_VIEW *view = viewRegistry[reactTag];
         NSString * b64;
         if ([view isKindOfClass:[RNSVGSvgView class]]) {
             RNSVGSvgView *svg = view;

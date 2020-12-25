@@ -10,6 +10,15 @@
 #import "RNSVGClipPath.h"
 #import "RNSVGMask.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_EVENT UIEvent
+#endif
+
+
 @implementation RNSVGGroup
 {
     RNSVGGlyphContext *_glyphContext;
@@ -38,7 +47,7 @@
 
     __block CGRect bounds = CGRectNull;
 
-    [self traverseSubviews:^(UIView *node) {
+    [self traverseSubviews:^(PLATFORM_VIEW *node) {
         if ([node isKindOfClass:[RNSVGMask class]] || [node isKindOfClass:[RNSVGClipPath class]]) {
             // no-op
         } else if ([node isKindOfClass:[RNSVGNode class]]) {
@@ -160,7 +169,7 @@
     return cached;
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (PLATFORM_VIEW *)hitTest:(CGPoint)point withEvent:(PLATFORM_EVENT *)event
 {
     CGPoint transformed = CGPointApplyAffineTransform(point, self.invmatrix);
     transformed = CGPointApplyAffineTransform(transformed, self.invTransform);
@@ -192,7 +201,7 @@
         }
     }
 
-    for (UIView *node in [self.subviews reverseObjectEnumerator]) {
+    for (PLATFORM_VIEW *node in [self.subviews reverseObjectEnumerator]) {
         if ([node isKindOfClass:[RNSVGNode class]]) {
             if ([node isKindOfClass:[RNSVGMask class]]) {
                 continue;
@@ -201,21 +210,21 @@
             if (event) {
                 svgNode.active = NO;
             }
-            UIView *hitChild = [svgNode hitTest:transformed withEvent:event];
+            PLATFORM_VIEW *hitChild = [svgNode hitTest:transformed withEvent:event];
             if (hitChild) {
                 svgNode.active = YES;
                 return (svgNode.responsible || (svgNode != hitChild)) ? hitChild : self;
             }
         } else if ([node isKindOfClass:[RNSVGSvgView class]]) {
             RNSVGSvgView* svgView = (RNSVGSvgView*)node;
-            UIView *hitChild = [svgView hitTest:transformed withEvent:event];
+            PLATFORM_VIEW *hitChild = [svgView hitTest:transformed withEvent:event];
             if (hitChild) {
                 return hitChild;
             }
         }
     }
 
-    UIView *hitSelf = [super hitTest:transformed withEvent:event];
+    PLATFORM_VIEW *hitSelf = [super hitTest:transformed withEvent:event];
     if (hitSelf) {
         return hitSelf;
     }

@@ -9,6 +9,14 @@
 #import "RNSVGSymbol.h"
 #import <React/RCTLog.h>
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_EVENT UIEvent
+#endif
+
 @implementation RNSVGUse
 
 - (void)setHref:(NSString *)href
@@ -108,12 +116,19 @@
 
     self.bounds = bounds;
     if (!isnan(center.x) && !isnan(center.y)) {
+#ifndef TARGET_OS_OSX
         self.center = center;
+#else
+        self.frame = CGRectMake(center.x - (self.bounds.size.width / 2.0),
+                                center.y - (self.bounds.size.height / 2.0),
+                                self.frame.size.height,
+                                self.frame.size.width);
+#endif
     }
     self.frame = bounds;
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+- (PLATFORM_VIEW *)hitTest:(CGPoint)point withEvent:(PLATFORM_EVENT *)event {
     CGPoint transformed = CGPointApplyAffineTransform(point, self.invmatrix);
     transformed =  CGPointApplyAffineTransform(transformed, self.invTransform);
     RNSVGNode const* template = [self.svgView getDefinedTemplate:self.href];
@@ -122,11 +137,13 @@
     } else if (self.active) {
         return self;
     }
-    UIView const* hitChild = [template hitTest:transformed withEvent:event];
+#ifndef TARGET_OS_OSX
+    PLATFORM_VIEW const* hitChild = [template hitTest:transformed withEvent:event];
     if (hitChild) {
         self.active = YES;
         return self;
     }
+#endif
     return nil;
 }
 

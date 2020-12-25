@@ -26,6 +26,15 @@
 #import <React/RCTLog.h>
 #import "RNSVGViewBox.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_IMAGE NSImage
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_IMAGE UIImage
+#endif
+
+
 @implementation RNSVGImage
 {
     CGImageRef _image;
@@ -54,9 +63,9 @@
         _reloadImageCancellationBlock = nil;
     }
 
-    _reloadImageCancellationBlock = [[self.bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:[RCTConvert NSURLRequest:src] callback:^(NSError *error, UIImage *image) {
+    _reloadImageCancellationBlock = [[self.bridge moduleForName:@"ImageLoader"] loadImageWithURLRequest:[RCTConvert NSURLRequest:src] callback:^(NSError *error, PLATFORM_IMAGE *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self->_image = CGImageRetain(image.CGImage);
+            self->_image = CGImageRetain([image CGImageForProposedRect:nil context:nil hints:nil]);
             self->_imageSize = CGSizeMake(CGImageGetWidth(self->_image), CGImageGetHeight(self->_image));
             [self invalidate];
         });

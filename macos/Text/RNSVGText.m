@@ -13,6 +13,15 @@
 #import "RNSVGGlyphContext.h"
 #import "RNSVGTextProperties.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_EVENT UIEvent
+#endif
+
+
 @implementation RNSVGText
 {
     RNSVGGlyphContext *_glyphContext;
@@ -196,7 +205,7 @@
         return _alignmentBaseline;
     }
 
-    UIView* parent = self.superview;
+    PLATFORM_VIEW* parent = self.superview;
     while (parent != nil) {
         if ([parent isKindOfClass:[RNSVGText class]]) {
             RNSVGText* node = (RNSVGText*)parent;
@@ -221,7 +230,7 @@
         return _baselineShift;
     }
 
-    UIView* parent = [self superview];
+    PLATFORM_VIEW* parent = [self superview];
     while (parent != nil) {
         if ([parent isKindOfClass:[RNSVGText class]]) {
             RNSVGText* node = (RNSVGText*)parent;
@@ -271,7 +280,7 @@
     RNSVGGlyphContext* gc = [self.textRoot getGlyphContext];
     NSArray* font = [gc getFontContext];
     RNSVGText* node = self;
-    UIView* parent = [self superview];
+    PLATFORM_VIEW* parent = [self superview];
     for (NSInteger i = [font count] - 1; i >= 0; i--) {
         RNSVGFontData* fontData = [font objectAtIndex:i];
         if (![parent isKindOfClass:[RNSVGText class]] ||
@@ -291,7 +300,7 @@
         return cachedAdvance;
     }
     CGFloat advance = 0;
-    for (UIView *node in self.subviews) {
+    for (PLATFORM_VIEW *node in self.subviews) {
         if ([node isKindOfClass:[RNSVGText class]]) {
             RNSVGText *text = (RNSVGText*)node;
             advance += [text getSubtreeTextChunksTotalAdvance];

@@ -12,6 +12,16 @@
 #import "RNSVGGroup.h"
 #import "RNSVGGlyphContext.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_COLOR NSColor
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_COLOR UIColor
+#define PLATFORM_EVENT UIEvent
+#endif
+
 @interface RNSVGNode()
 @property (nonatomic, readwrite, weak) RNSVGSvgView *svgView;
 @property (nonatomic, readwrite, weak) RNSVGGroup *textRoot;
@@ -36,24 +46,32 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
 {
     if (self = [super init]) {
         self.opacity = 1;
-        self.opaque = false;
         self.matrix = CGAffineTransformIdentity;
         self.transforms = CGAffineTransformIdentity;
         self.invTransform = CGAffineTransformIdentity;
         _merging = false;
         _dirty = false;
+#ifdef TARGET_OS_OSX
+        self.wantsLayer = true;
+#else
+        self.opaque = false;
+#endif
     }
     return self;
 }
 
-- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
+- (void)insertReactSubview:(PLATFORM_VIEW *)subview atIndex:(NSInteger)atIndex
 {
     [super insertReactSubview:subview atIndex:atIndex];
+#ifndef TARGET_OS_OSX
     [self insertSubview:subview atIndex:atIndex];
+#else
+    [self addSubview:subview];
+#endif
     [self invalidate];
 }
 
-- (void)removeReactSubview:(UIView *)subview
+- (void)removeReactSubview:(PLATFORM_VIEW *)subview
 {
     [super removeReactSubview:subview];
     [self invalidate];
@@ -98,7 +116,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
 {
     RNSVGNode* node = self;
     while (node != nil) {
-        UIView* parent = [node superview];
+        PLATFORM_VIEW* parent = [node superview];
 
         if (![parent isKindOfClass:[RNSVGNode class]]) {
             return;
@@ -124,7 +142,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
             break;
         }
 
-        UIView* parent = [node superview];
+        PLATFORM_VIEW* parent = [node superview];
 
         if (![node isKindOfClass:[RNSVGNode class]]) {
             node = nil;
@@ -160,7 +178,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
     return [glyphContext getFontSize];
 }
 
-- (void)reactSetInheritedBackgroundColor:(UIColor *)inheritedBackgroundColor
+- (void)reactSetInheritedBackgroundColor:(PLATFORM_COLOR *)inheritedBackgroundColor
 {
     self.backgroundColor = inheritedBackgroundColor;
 }
@@ -168,10 +186,12 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
 - (void)setPointerEvents:(RCTPointerEvents)pointerEvents
 {
   _pointerEvents = pointerEvents;
+#ifndef TARGET_OS_OSX
   self.userInteractionEnabled = (pointerEvents != RCTPointerEventsNone);
   if (pointerEvents == RCTPointerEventsBoxNone) {
     self.accessibilityViewIsModal = NO;
   }
+#endif
 }
 
 - (void)setName:(NSString *)name
@@ -390,7 +410,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
 }
 
 // hitTest delagate
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (PLATFORM_VIEW *)hitTest:(CGPoint)point withEvent:(PLATFORM_EVENT *)event
 {
 
     // abstract
@@ -403,7 +423,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
         return _svgView;
     }
 
-    __kindof UIView *parent = self.superview;
+    __kindof PLATFORM_VIEW *parent = self.superview;
 
     if ([parent class] == [RNSVGSvgView class]) {
         _svgView = parent;
@@ -587,9 +607,9 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
     }
 }
 
-- (void)traverseSubviews:(BOOL (^)(__kindof UIView *node))block
+- (void)traverseSubviews:(BOOL (^)(__kindof PLATFORM_VIEW *node))block
 {
-    for (UIView *node in self.subviews) {
+    for (PLATFORM_VIEW *node in self.subviews) {
         if (!block(node)) {
             break;
         }
@@ -604,5 +624,22 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
     CGPathRelease(_path);
     _clipMask = nil;
 }
+
+#ifdef TARGET_OS_OSX
+- (CGPoint) center {
+    return CGPointMake(self.frame.origin.x + self.frame.size.width / 2.0, self.frame.origin.y + self.frame.size.height / 2.0);
+}
+
+- (void) setCenter:(CGPoint)center {
+    self.frame = CGRectMake(center.x - self.frame.size.width / 2.0, center.y - self.frame.size.height / 2.0, self.frame.size.width, self.frame.size.height);
+}
+- (NSColor *)backgroundColor {
+    return self.layer.backgroundColor;
+}
+
+- (void)setBackgroundColor:(NSColor *)backgroundColor {
+    self.layer.backgroundColor = backgroundColor.CGColor;
+}
+#endif
 
 @end

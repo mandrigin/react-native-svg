@@ -12,15 +12,45 @@
 #import "RNSVGPathMeasure.h"
 #import "RNSVGFontData.h"
 
+#ifdef TARGET_OS_OSX
+@interface NSValue (CGAffineTransform)
++ (instancetype)valueWithCGAffineTransform:(CGAffineTransform)value;
+@property (readonly) CGAffineTransform CGAffineTransformValue;
+@end
+
+@implementation NSValue (CGAffineTransform)
++ (instancetype)valueWithCGAffineTransform:(CGAffineTransform)value
+{
+    return [self valueWithBytes:&value objCType:@encode(CGAffineTransform)];
+}
+- (CGAffineTransform) CGAffineTransformValue
+{
+    CGAffineTransform value;
+    [self getValue:&value];
+    return value;
+}
+@end
+#endif
+
 static NSCharacterSet *RNSVGTSpan_separators = nil;
 static CGFloat RNSVGTSpan_radToDeg = 180 / (CGFloat)M_PI;
 
-@interface TopAlignedLabel : UILabel
+#ifdef TARGET_OS_OSX
+#define PLATFORM_LABEL NSTextField
+#define PLATFORM_COLOR NSColor
+#else
+#define PLATFORM_LABEL UILabel
+#define PLATFORM_COLOR UIColor
+#endif
+
+@interface TopAlignedLabel : PLATFORM_LABEL
 
 @end
 
 
 @implementation TopAlignedLabel
+
+#ifndef TARGET_OS_OSX
 
 - (void)drawTextInRect:(CGRect) rect
 {
@@ -33,6 +63,8 @@ static CGFloat RNSVGTSpan_radToDeg = 180 / (CGFloat)M_PI;
     }
     [super drawTextInRect:rect];
 }
+
+#endif
 
 @end
 
@@ -116,7 +148,7 @@ static CGFloat RNSVGTSpan_radToDeg = 180 / (CGFloat)M_PI;
                 NSUInteger count = [emoji count];
                 CGFloat fontSize = [gc getFontSize];
                 for (NSUInteger i = 0; i < count; i++) {
-                    UILabel *label = [emoji objectAtIndex:i];
+                    PLATFORM_LABEL *label = [emoji objectAtIndex:i];
                     NSValue *transformValue = [emojiTransform objectAtIndex:i];
                     CGAffineTransform transform = [transformValue CGAffineTransformValue];
                     CGContextConcatCTM(context, transform);
@@ -200,6 +232,7 @@ TopAlignedLabel *label;
     if (!label) {
         label = [[TopAlignedLabel alloc] init];
     }
+#ifndef TARGET_OS_OSX
     label.attributedText = (__bridge NSAttributedString * _Nullable)(attrString);
     label.baselineAdjustment = UIBaselineAdjustmentNone;
     label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -208,7 +241,9 @@ TopAlignedLabel *label;
     label.numberOfLines = 0;
     label.opaque = NO;
     label.font = font;
-    label.textColor = [UIColor colorWithCGColor:color];
+#else
+#endif
+    label.textColor = [PLATFORM_COLOR colorWithCGColor:color];
 
     CGFloat fontSize = [gc getFontSize];
     CGFloat height = CGRectGetHeight(rect);
@@ -279,7 +314,7 @@ TopAlignedLabel *label;
 
     NSString *str = self.content;
     if (!str) {
-        for (UIView *node in self.subviews) {
+        for (PLATFORM_VIEW *node in self.subviews) {
             if ([node isKindOfClass:[RNSVGText class]]) {
                 RNSVGText *text = (RNSVGText*)node;
                 advance += [text getSubtreeTextChunksTotalAdvance];
@@ -1008,14 +1043,16 @@ TopAlignedLabel *label;
             CGFloat width = box.size.width;
 
             if (width == 0) { // Render unicode emoji
-                UILabel *label = [[UILabel alloc] init];
+                PLATFORM_LABEL *label = [[PLATFORM_LABEL alloc] init];
                 CFIndex startIndex = indices[g];
                 long len = MAX(1, endIndex - startIndex);
                 NSRange range = NSMakeRange(startIndex, len);
                 NSString* currChars = [str substringWithRange:range];
+#ifndef TARGET_OS_OSX
                 label.text = currChars;
                 label.opaque = NO;
-                label.backgroundColor = UIColor.clearColor;
+#endif
+                label.backgroundColor = PLATFORM_COLOR.clearColor;
                 UIFont * customFont = [UIFont systemFontOfSize:fontSize];
 
                 CGSize measuredSize = [currChars sizeWithAttributes:

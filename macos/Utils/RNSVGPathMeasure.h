@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import <UIKit/UIKit.h>
-
 @interface RNSVGPathMeasure : NSObject
 
 @property CGFloat pathLength;

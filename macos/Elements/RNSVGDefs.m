@@ -7,6 +7,18 @@
  */
 #import "RNSVGDefs.h"
 
+#ifdef TARGET_OS_OSX
+
+#define PLATFORM_VIEW NSView
+#define PLATFORM_EVENT NSEvent
+
+#else
+
+#define PLATFORM_VIEW UIView
+#define PLATFORM_EVENT UIEvent
+
+#endif
+
 @class RNSVGNode;
 
 @implementation RNSVGDefs
@@ -27,7 +39,7 @@
     }];
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (PLATFORM_VIEW *)hitTest:(CGPoint)point withEvent:(PLATFORM_EVENT *)event
 {
     return nil;
 }

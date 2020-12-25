@@ -6,14 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import <UIKit/UIKit.h>
 #import "RNSVGPainter.h"
 #import "RNSVGContainer.h"
 #import "RNSVGVBMOS.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#else
+#define PLATFORM_VIEW UIView
+#endif
+
 @class RNSVGNode;
 
-@interface RNSVGSvgView : UIView <RNSVGContainer>
+@interface RNSVGSvgView : PLATFORM_VIEW<RNSVGContainer>
 
 @property (nonatomic, strong) RNSVGLength *bbWidth;
 @property (nonatomic, strong) RNSVGLength *bbHeight;
@@ -29,7 +34,10 @@
 @property (nonatomic, assign) CGAffineTransform initialCTM;
 @property (nonatomic, assign) CGAffineTransform invInitialCTM;
 @property (nonatomic, assign) CGAffineTransform viewBoxTransform;
-
+#ifdef TARGET_OS_OSX
+@property (nonatomic, assign) NSColor *tintColor;
+-(NSView *)hitTest:(NSPoint)point withEvent:(NSEvent *)event;
+#endif
 
 
 /**

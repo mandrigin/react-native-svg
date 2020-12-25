@@ -8,6 +8,12 @@
 
 #import "RNSVGClipPath.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#else
+#define PLATFORM_VIEW UIView
+#endif
+
 @implementation RNSVGClipPath
 
 - (void)parseReference
@@ -19,9 +25,9 @@
 
 - (BOOL)isSimpleClipPath
 {
-    NSArray<UIView*> *children = self.subviews;
+    NSArray<PLATFORM_VIEW*> *children = self.subviews;
     if (children.count == 1) {
-        UIView* child = children[0];
+        PLATFORM_VIEW* child = children[0];
         if ([child class] != [RNSVGGroup class]) {
             return true;
         }

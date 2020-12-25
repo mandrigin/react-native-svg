@@ -1,5 +1,3 @@
-#import <UIKit/UIKit.h>
-
 #ifndef RNSVGLength_h
 #define RNSVGLength_h
 

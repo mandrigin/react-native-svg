@@ -17,7 +17,13 @@
  ＊interfaces for all non-definition nodes.
  */
 
-@interface RNSVGNode : UIView
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#else
+#define PLATFORM_VIEW UIView
+#endif
+
+@interface RNSVGNode : PLATFORM_VIEW
 
 /*
  N[1/Sqrt[2], 36]
@@ -62,6 +68,12 @@ extern CGFloat const RNSVG_DEFAULT_FONT_SIZE;
 @property (nonatomic, assign) CGRect strokeBounds;
 @property (nonatomic, assign) CGRect markerBounds;
 @property (nonatomic, copy) RCTDirectEventBlock onLayout;
+
+#ifdef TARGET_OS_OSX
+@property (nonatomic) CGPoint center;
+- (NSView *)hitTest:(NSPoint)point withEvent:(NSEvent *)event;
+@property (nonatomic) NSColor *backgroundColor;
+#endif
 
 
 /**
@@ -132,7 +144,7 @@ extern CGFloat const RNSVG_DEFAULT_FONT_SIZE;
 
 - (void)endTransparencyLayer:(CGContextRef)context;
 
-- (void)traverseSubviews:(BOOL (^)(__kindof UIView *node))block;
+- (void)traverseSubviews:(BOOL (^)(__kindof PLATFORM_VIEW *node))block;
 
 - (void)clearChildCache;
 

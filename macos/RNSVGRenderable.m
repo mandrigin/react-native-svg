@@ -16,6 +16,14 @@
 #import "RNSVGMarker.h"
 #import "RNSVGMarkerPosition.h"
 
+#ifdef TARGET_OS_OSX
+#define PLATFORM_VIEW NSView
+#define PLATFORM_EVENT NSEvent
+#else
+#define PLATFORM_VIEW UIView
+#define PLATFORM_EVENT UIEvent
+#endif
+
 @implementation RNSVGRenderable
 {
     NSMutableDictionary *_originProperties;
@@ -334,7 +342,11 @@ UInt32 saturate(CGFloat value) {
             }
 
             [marker renderMarker:context rect:*rect position:position strokeWidth:width];
+#ifdef TARGET_OS_OSX
+            CGAffineTransform transform = marker.layer.affineTransform;
+#else
             CGAffineTransform transform = marker.transform;
+#endif
             CGPathRef hitArea = marker.hitArea;
             CGPathAddPath(markerPath, &transform, hitArea);
             CGRect nodeRect = marker.pathBounds;
@@ -513,7 +525,7 @@ UInt32 saturate(CGFloat value) {
 }
 
 // hitTest delegate
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (PLATFORM_VIEW *)hitTest:(CGPoint)point withEvent:(PLATFORM_EVENT *)event
 {
     if (!_hitArea) {
         return nil;
@@ -605,5 +617,13 @@ UInt32 saturate(CGFloat value) {
     _attributeList = _propList;
     self.merging = false;
 }
+
+#ifdef TARGET_OS_OSX
+
+- (NSColor *)tintColor {
+    return [NSColor clearColor];
+}
+
+#endif
 
 @end

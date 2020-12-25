@@ -6,9 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
-#import <UIKit/UIKit.h>
-
 @interface RNSVGPathParser : NSObject
 
 - (instancetype) initWithPathString:(NSString *)d;
