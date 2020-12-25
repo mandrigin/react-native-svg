@@ -51,6 +51,8 @@
 		167AF45B2087C2A10035AA75 /* RNSVGTextProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B56895A62035274F004DBF1E /* RNSVGTextProperties.m */; };
 		1687FE772422B4B800741CCB /* RNSVGForeignObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1687FE762422B4B800741CCB /* RNSVGForeignObject.m */; };
 		1691FD1A2422B74500C5277B /* RNSVGForeignObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1691FD192422B74500C5277B /* RNSVGForeignObjectManager.m */; };
+		74E2D84F25962E1100FDFC4F /* RNSVG_macOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 74E2D84E25962E1100FDFC4F /* RNSVG_macOS.h */; };
+		74E2D85125962E1100FDFC4F /* RNSVG_macOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E2D85025962E1100FDFC4F /* RNSVG_macOS.m */; };
 		7F08CE9A1E23476900650F83 /* RNSVGTextPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F08CE971E23476900650F83 /* RNSVGTextPathManager.m */; };
 		7F08CE9B1E23476900650F83 /* RNSVGTSpanManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F08CE991E23476900650F83 /* RNSVGTSpanManager.m */; };
 		7F08CEA01E23479700650F83 /* RNSVGTextPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F08CE9D1E23479700650F83 /* RNSVGTextPath.m */; };
@@ -242,6 +244,9 @@
 		1687FE762422B4B800741CCB /* RNSVGForeignObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNSVGForeignObject.m; path = Elements/RNSVGForeignObject.m; sourceTree = "<group>"; };
 		1691FD182422B6F400C5277B /* RNSVGForeignObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGForeignObjectManager.h; sourceTree = "<group>"; };
 		1691FD192422B74500C5277B /* RNSVGForeignObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGForeignObjectManager.m; sourceTree = "<group>"; };
+		74E2D84C25962E1100FDFC4F /* libRNSVG-macOS.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libRNSVG-macOS.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		74E2D84E25962E1100FDFC4F /* RNSVG_macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSVG_macOS.h; sourceTree = "<group>"; };
+		74E2D85025962E1100FDFC4F /* RNSVG_macOS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSVG_macOS.m; sourceTree = "<group>"; };
 		7F08CE961E23476900650F83 /* RNSVGTextPathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGTextPathManager.h; sourceTree = "<group>"; };
 		7F08CE971E23476900650F83 /* RNSVGTextPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGTextPathManager.m; sourceTree = "<group>"; };
 		7F08CE981E23476900650F83 /* RNSVGTSpanManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGTSpanManager.h; sourceTree = "<group>"; };
@@ -313,6 +318,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		74E2D84A25962E1100FDFC4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A361E79E1EB0C33D00646005 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,6 +349,7 @@
 				10ED4AA11CF078830078BC02 /* RNSVGNode.m */,
 				0CF68AE11AF0549300FF9E5C /* RNSVGRenderable.h */,
 				0CF68AE21AF0549300FF9E5C /* RNSVGRenderable.m */,
+				74E2D84D25962E1100FDFC4F /* RNSVG-macOS */,
 				0CF68AC21AF0540F00FF9E5C /* Products */,
 				9494C2B31F46139600D5BCFD /* Frameworks */,
 			);
@@ -347,6 +360,7 @@
 			children = (
 				0CF68AC11AF0540F00FF9E5C /* libRNSVG.a */,
 				94DDAC5C1F3D024300EED511 /* libRNSVG-tvOS.a */,
+				74E2D84C25962E1100FDFC4F /* libRNSVG-macOS.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -518,6 +532,15 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		74E2D84D25962E1100FDFC4F /* RNSVG-macOS */ = {
+			isa = PBXGroup;
+			children = (
+				74E2D84E25962E1100FDFC4F /* RNSVG_macOS.h */,
+				74E2D85025962E1100FDFC4F /* RNSVG_macOS.m */,
+			);
+			path = "RNSVG-macOS";
+			sourceTree = "<group>";
+		};
 		9494C2B31F46139600D5BCFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -532,6 +555,17 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		74E2D84825962E1100FDFC4F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74E2D84F25962E1100FDFC4F /* RNSVG_macOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		0CF68AC01AF0540F00FF9E5C /* RNSVG */ = {
@@ -550,6 +584,23 @@
 			productName = RNSVG;
 			productReference = 0CF68AC11AF0540F00FF9E5C /* libRNSVG.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		74E2D84B25962E1100FDFC4F /* RNSVG-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 74E2D85425962E1100FDFC4F /* Build configuration list for PBXNativeTarget "RNSVG-macOS" */;
+			buildPhases = (
+				74E2D84825962E1100FDFC4F /* Headers */,
+				74E2D84925962E1100FDFC4F /* Sources */,
+				74E2D84A25962E1100FDFC4F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RNSVG-macOS";
+			productName = "RNSVG-macOS";
+			productReference = 74E2D84C25962E1100FDFC4F /* libRNSVG-macOS.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
 		};
 		A361E76C1EB0C33D00646005 /* RNSVG-tvOS */ = {
 			isa = PBXNativeTarget;
@@ -579,6 +630,10 @@
 					0CF68AC01AF0540F00FF9E5C = {
 						CreatedOnToolsVersion = 6.2;
 					};
+					74E2D84B25962E1100FDFC4F = {
+						CreatedOnToolsVersion = 12.3;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 0CF68ABC1AF0540F00FF9E5C /* Build configuration list for PBXProject "RNSVG" */;
@@ -586,6 +641,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 0CF68AB81AF0540F00FF9E5C;
@@ -595,6 +651,7 @@
 			targets = (
 				0CF68AC01AF0540F00FF9E5C /* RNSVG */,
 				A361E76C1EB0C33D00646005 /* RNSVG-tvOS */,
+				74E2D84B25962E1100FDFC4F /* RNSVG-macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -666,6 +723,14 @@
 				B56895B320352B9C004DBF1E /* RNSVGFontData.m in Sources */,
 				1023B48D1D3DDCCE0051496D /* RNSVGDefsManager.m in Sources */,
 				94A178FF2344097B00693CB3 /* RNSVGMarkerPosition.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		74E2D84925962E1100FDFC4F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74E2D85125962E1100FDFC4F /* RNSVG_macOS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,6 +951,59 @@
 			};
 			name = Release;
 		};
+		74E2D85225962E1100FDFC4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		74E2D85325962E1100FDFC4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		A361E7A11EB0C33D00646005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -923,6 +1041,15 @@
 			buildConfigurations = (
 				0CF68AD61AF0540F00FF9E5C /* Debug */,
 				0CF68AD71AF0540F00FF9E5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		74E2D85425962E1100FDFC4F /* Build configuration list for PBXNativeTarget "RNSVG-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74E2D85225962E1100FDFC4F /* Debug */,
+				74E2D85325962E1100FDFC4F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
