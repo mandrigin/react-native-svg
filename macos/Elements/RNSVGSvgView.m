@@ -35,8 +35,10 @@
     if (self = [super initWithFrame:frame]) {
         // This is necessary to ensure that [self setNeedsDisplay] actually triggers
         // a redraw when our parent transitions between hidden and visible.
-#ifndef TARGET_OS_OSX
+#if TARGET_OS_OSX == 0
         self.contentMode = UIViewContentModeRedraw;
+#else
+        self.wantsLayer = true;
 #endif
         rendered = false;
     }
@@ -90,8 +92,10 @@
         rendered = false;
         return;
     }
-#ifndef TARGET_OS_OSX
+#if TARGET_OS_OSX == 0
     [self setNeedsDisplay];
+#else
+    [self setNeedsDisplay:YES];
 #endif
 }
 
