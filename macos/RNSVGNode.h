@@ -17,7 +17,7 @@
  ＊interfaces for all non-definition nodes.
  */
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #else
 #define PLATFORM_VIEW UIView
@@ -69,7 +69,7 @@ extern CGFloat const RNSVG_DEFAULT_FONT_SIZE;
 @property (nonatomic, assign) CGRect markerBounds;
 @property (nonatomic, copy) RCTDirectEventBlock onLayout;
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 @property (nonatomic) CGPoint center;
 - (NSView *)hitTest:(NSPoint)point withEvent:(NSEvent *)event;
 @property (nonatomic) NSColor *backgroundColor;

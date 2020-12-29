@@ -10,7 +10,7 @@
 #import "RNSVGContainer.h"
 #import "RNSVGVBMOS.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #else
 #define PLATFORM_VIEW UIView
@@ -34,7 +34,7 @@
 @property (nonatomic, assign) CGAffineTransform initialCTM;
 @property (nonatomic, assign) CGAffineTransform invInitialCTM;
 @property (nonatomic, assign) CGAffineTransform viewBoxTransform;
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 @property (nonatomic, assign) NSColor *tintColor;
 -(NSView *)hitTest:(NSPoint)point withEvent:(NSEvent *)event;
 #endif

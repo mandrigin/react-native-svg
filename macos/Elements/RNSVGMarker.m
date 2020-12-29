@@ -11,7 +11,7 @@
 #import "RNSVGNode.h"
 #import "RNSVGViewBox.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #define PLATFORM_COLOR NSColor
 #define PLATFORM_EVENT NSEvent
@@ -197,7 +197,7 @@ double deg2rad(CGFloat deg) {
     CGFloat x = [self relativeOnWidth:self.refX];
     CGFloat y = [self relativeOnHeight:self.refY];
     transform = CGAffineTransformTranslate(transform,  -x, -y);
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
     self.layer.affineTransform = transform;
 #else
     self.transform = transform;

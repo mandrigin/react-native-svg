@@ -40,7 +40,7 @@
 
 - (void)resetProperties;
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 
 - (NSColor *)tintColor;
 

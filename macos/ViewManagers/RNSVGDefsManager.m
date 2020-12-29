@@ -9,7 +9,7 @@
 #import "RNSVGDefsManager.h"
 #import "RNSVGDefs.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #else
 #define PLATFORM_VIEW UIView

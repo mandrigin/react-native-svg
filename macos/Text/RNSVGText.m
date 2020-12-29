@@ -13,7 +13,7 @@
 #import "RNSVGGlyphContext.h"
 #import "RNSVGTextProperties.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #define PLATFORM_EVENT NSEvent
 #else

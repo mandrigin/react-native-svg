@@ -84,7 +84,7 @@ void subdivideBezierAtT(const CGPoint bez[4], CGPoint bez1[4], CGPoint bez2[4], 
     bez1[3].y = bez2[0].y = mt * bez1[2].y + t * bez2[1].y;
 }
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 @interface NSValue (CGPoint)
 + (instancetype)valueWithCGPoint:(CGPoint)value;
 @property (readonly) CGPoint cgPointValue;

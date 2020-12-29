@@ -7,7 +7,7 @@
  */
 #import "RNSVGRadialGradient.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_EVENT NSEvent
 #else
 #define PLATFORM_EVENT UIEvent

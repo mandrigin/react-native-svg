@@ -12,7 +12,7 @@
 #import "RNSVGGroup.h"
 #import "RNSVGGlyphContext.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #define PLATFORM_COLOR NSColor
 #define PLATFORM_EVENT NSEvent
@@ -51,7 +51,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
         self.invTransform = CGAffineTransformIdentity;
         _merging = false;
         _dirty = false;
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
         self.wantsLayer = true;
 #else
         self.opaque = false;
@@ -625,7 +625,7 @@ CGFloat const RNSVG_DEFAULT_FONT_SIZE = 12;
     _clipMask = nil;
 }
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 - (CGPoint) center {
     return CGPointMake(self.frame.origin.x + self.frame.size.width / 2.0, self.frame.origin.y + self.frame.size.height / 2.0);
 }

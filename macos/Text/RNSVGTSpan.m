@@ -12,7 +12,7 @@
 #import "RNSVGPathMeasure.h"
 #import "RNSVGFontData.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 @interface NSValue (CGAffineTransform)
 + (instancetype)valueWithCGAffineTransform:(CGAffineTransform)value;
 @property (readonly) CGAffineTransform CGAffineTransformValue;
@@ -35,7 +35,7 @@
 static NSCharacterSet *RNSVGTSpan_separators = nil;
 static CGFloat RNSVGTSpan_radToDeg = 180 / (CGFloat)M_PI;
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_LABEL NSTextField
 #define PLATFORM_COLOR NSColor
 #else

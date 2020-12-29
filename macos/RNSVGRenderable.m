@@ -16,7 +16,7 @@
 #import "RNSVGMarker.h"
 #import "RNSVGMarkerPosition.h"
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_VIEW NSView
 #define PLATFORM_EVENT NSEvent
 #else
@@ -342,7 +342,7 @@ UInt32 saturate(CGFloat value) {
             }
 
             [marker renderMarker:context rect:*rect position:position strokeWidth:width];
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
             CGAffineTransform transform = marker.layer.affineTransform;
 #else
             CGAffineTransform transform = marker.transform;
@@ -618,7 +618,7 @@ UInt32 saturate(CGFloat value) {
     self.merging = false;
 }
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 
 - (NSColor *)tintColor {
     return [NSColor clearColor];

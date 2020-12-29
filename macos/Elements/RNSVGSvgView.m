@@ -11,7 +11,7 @@
 #import "RNSVGNode.h"
 #import <React/RCTLog.h>
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 #define PLATFORM_COLOR NSColor
 #define PLATFORM_EVENT NSEvent
 #else
@@ -300,7 +300,7 @@
     self.backgroundColor = inheritedBackgroundColor;
 }
 
-#ifdef TARGET_OS_OSX
+#if TARGET_OS_OSX == 1
 - (void)setBackgroundColor:(NSColor *)color
 {
     self.layer.backgroundColor = color.CGColor;
